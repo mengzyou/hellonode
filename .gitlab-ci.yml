@@ -34,7 +34,7 @@ test:docker:
   stage: test
   script:
     - docker pull $CONTAINER_TEST_IMAGE
-    - docker container run --rm $CONTAINER_TEST_IMAGE npm run test
+    - docker container run --rm $CONTAINER_TEST_IMAGE npm test
   tags:
     - docker
     - dind
