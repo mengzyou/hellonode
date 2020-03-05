@@ -67,3 +67,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+  deploy:
+    runs-on: [self-hosted,linux]
+    steps:
+      - name: Docker run container
+        env:
+          CONTAINER_IMAGE: mengzyou/hellonode
+          CONTAINER_NAME: webapps_hellonode
+        run: docker image pull $CONTAINER_IMAGE
+        run: docker container stop $CONTAINER_NAME || true
+        run: docker container rm $CONTAINER_NAME || true
+        run: docker container run --name $CONTAINER_NAME -d -p 8000:3000 $CONTAINER_IMAGE
+        run: docker image prune -f    # remove the dangling images
