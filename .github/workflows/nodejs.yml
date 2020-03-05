@@ -52,3 +52,18 @@ jobs:
         env:
           REDIS_HOST: redis
           REDIS_PORT: 6379
+  
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+      - name: Build & Push container image
+        uses: mr-smithers-excellent/docker-build-push@v2
+        with:
+          image: mengzyou/hellonode
+          tag: latest
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
