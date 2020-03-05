@@ -48,7 +48,7 @@ jobs:
           CI: true
   
       - name: Connect to Redis
-        run: node clients.js
+        run: node client.js
         env:
           REDIS_HOST: redis
           REDIS_PORT: 6379
