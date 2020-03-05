@@ -69,14 +69,20 @@ jobs:
 
   deploy:
     runs-on: [self-hosted,linux]
+    env:
+      CONTAINER_IMAGE: mengzyou/hellonode
+      CONTAINER_NAME: webapps_hellonode
     steps:
-      - name: Docker run container
-        env:
-          CONTAINER_IMAGE: mengzyou/hellonode
-          CONTAINER_NAME: webapps_hellonode
+      - name: Docker pull image
         run: docker image pull $CONTAINER_IMAGE
-        run: |
-          docker container stop $CONTAINER_NAME || true
-          docker container rm -f $CONTAINER_NAME || true
+      - name: Docker stop container
+        run: docker container stop $CONTAINER_NAME
+      - name: Docker remove container
+        if: always()
+        run: docker container rm -f $CONTAINER_NAME
+      - name: Docker run container
+        if: always()
         run: docker container run --name $CONTAINER_NAME -d -p 8000:3000 $CONTAINER_IMAGE
+      - name: Prune images
+        if: always()
         run: docker image prune -f    # remove the dangling images
